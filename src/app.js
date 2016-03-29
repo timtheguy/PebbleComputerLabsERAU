@@ -1,11 +1,16 @@
 var UI = require('ui');
-var ajax = require('ajax');
-var Vector2 = require('vector2');
 
 // Show splash screen while waiting for data
 var splashWindow = new UI.Window({
   backgroundColor:'black'
 });
+
+splashWindow.show();
+
+
+var ajax = require('ajax');
+var Vector2 = require('vector2');
+
 
 // Text element to inform user
 var text = new UI.Text({
@@ -20,7 +25,7 @@ var text = new UI.Text({
 
 // Add to splashWindow and show
 splashWindow.add(text);
-splashWindow.show();
+
 
 var menu = new UI.Menu({
   backgroundColor: 'white',
