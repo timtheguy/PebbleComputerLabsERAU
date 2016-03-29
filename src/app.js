@@ -36,8 +36,6 @@ var menu = new UI.Menu({
     title: 'All Computers'}]
 });
 
-// Construct URL
-//var URL = 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + myAPIKey;
 var URL = "https://webforms.erau.edu/public/mobile/erauapp/labs/labStats.cfc?method=labstatsApiProxy&apiPath=/api/public/GetMap/1020";
 
 // Make the request
@@ -48,11 +46,9 @@ ajax(
   },
   function(data) {
     // Success!
-    console.log("Successfully fetched weather data!");
+    console.log("Contacted server and received response");
     var status = null;
     var availableComputers = 0;
-    
-    console.log("Status of 0: " + status);
     
     for (var i = 0; i < data.MapStations.length; i++) { 
       status = data.MapStations[i].Status; 
@@ -75,6 +71,6 @@ ajax(
   },
   function(error) {
     // Failure!
-    console.log('Failed fetching weather data: ' + error);
+    console.log('Failed to access resource: ' + error);
   }
 );
