@@ -151,6 +151,12 @@ if(!(isEmpty(data))){ //if NOT_FIRST_TIME is not emptyS
   Settings.data('NOT_FIRST_TIME', { value: true });
 }
 
+//build menu
+
+//populate menu from request
+
+//handle refresh event
+
 
 function getLabStats(title, labID){
     var flickFlag = 0;
