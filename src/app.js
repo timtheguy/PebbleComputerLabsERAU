@@ -2,6 +2,8 @@ var UI = require('ui');
 var ajax = require('ajax');
 var Vector2 = require('vector2');
 var Settings = require('settings');
+var Vibe = require('ui/vibe');
+var Accel = require('ui/accel');
 
 // Show splash screen while waiting for data
 var loadingWindow = new UI.Window({
@@ -69,7 +71,7 @@ var card = new UI.Card({
   title: 'Instructions',
   scrollable: true,
   style: 'small',
-  body: 'Press the center button to view the status of computers in the lab. \n\nPress and hold the center button while viewing any of the labs to refresh the data. \n\nPress and hold the center button from the main menu to view this card again.'
+  body: 'Press the center button to view the status of computers in the lab. \n\nPress and hold the center button or shake your wrist while viewing any of the labs to refresh the data. \n\nPress and hold the center button from the main menu to view this card again.'
 });
 
 mainMenu.on('longSelect', function(e) {
@@ -117,9 +119,6 @@ mainMenu.on('select', function(e) {
 
 mainMenu.show();
 
-// Speed up calls to hasOwnProperty
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
 function isEmpty(obj) {
 
     // null and undefined are "empty"
@@ -154,6 +153,7 @@ if(!(isEmpty(data))){ //if NOT_FIRST_TIME is not emptyS
 
 
 function getLabStats(title, labID){
+    var flickFlag = 0;
     var menu = new UI.Menu({
       backgroundColor: 'white',
       textColor: 'black',
@@ -169,9 +169,23 @@ function getLabStats(title, labID){
     });
   
     menu.on('longSelect', function(e) {
-       menu.hide();
-       getLabStats(title, labID);
+      loadingWindow.show();
+      menu.hide();
+      getLabStats(title, labID);
     });
+  
+  Accel.on('tap', function(e) {
+      if(flickFlag === 1){
+        //do nothing
+      }else if(flickFlag === 0){
+        loadingWindow.show();
+        menu.hide();
+        getLabStats(title, labID);
+        flickFlag++;
+      }
+      
+    
+  });
   
     var URL = "https://webforms.erau.edu/public/mobile/erauapp/labs/labStats.cfc?method=labstatsApiProxy&apiPath=/api/public/GetMap/" + labID;
     
@@ -203,6 +217,9 @@ function getLabStats(title, labID){
         
         menu.item(0,0, { title: availableComputers + ' computers', subtitle: 'are available now'});
         menu.show();
+        flickFlag = 0;
+        
+        Vibe.vibrate('short');
         loadingWindow.hide();
         
       },
