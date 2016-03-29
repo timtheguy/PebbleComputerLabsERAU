@@ -67,6 +67,17 @@ var mainMenu = new UI.Menu({
   }]
 });
 
+mainMenu.on('longSelect', function(e) {
+        var card = new UI.Card({
+          title: 'To use:',
+          subtitle: 'Testing'
+        });
+  
+        card.body('This is the content of my card!');
+        card.show();
+  
+});
+
 mainMenu.on('select', function(e) {
   console.log('Currently selected item is #' + e.itemIndex + ' of section #' + e.sectionIndex);
   console.log('The item is titled "' + e.item.title + '"');
@@ -123,6 +134,11 @@ function getLabStats(title, labID){
         }]
       },{
         title: 'All Computers'}]
+    });
+  
+    menu.on('longSelect', function(e) {
+       menu.hide();
+       getLabStats(title, labID);
     });
   
     var URL = "https://webforms.erau.edu/public/mobile/erauapp/labs/labStats.cfc?method=labstatsApiProxy&apiPath=/api/public/GetMap/" + labID;
