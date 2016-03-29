@@ -28,6 +28,16 @@
                 "file": "fonts/UbuntuMono-Regular.ttf",
                 "name": "MONO_FONT_14",
                 "type": "font"
+            },
+            {
+                "file": "images/x_icon.png",
+                "name": "IMAGES_X_ICON_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/check_icon.png",
+                "name": "IMAGES_CHECK_ICON_PNG",
+                "type": "bitmap"
             }
         ]
     },

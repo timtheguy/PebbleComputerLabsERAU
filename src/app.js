@@ -23,8 +23,8 @@ splashWindow.add(text);
 splashWindow.show();
 
 var menu = new UI.Menu({
-  backgroundColor: 'black',
-  textColor: 'white',
+  backgroundColor: 'white',
+  textColor: 'black',
   highlightBackgroundColor: 'blue',
   highlightTextColor: 'white',
   sections: [{
@@ -58,13 +58,14 @@ ajax(
       status = data.MapStations[i].Status; 
       if(status.localeCompare("InUse") === 0){
          status = "Currently in use";
-         
+        menu.item(1, i, { title: 'Computer ' + (i+1), subtitle: status, icon: 'images/x_icon.png' });
       }else{
         status = "Available";
+        menu.item(1, i, { title: 'Computer ' + (i+1), subtitle: status, icon: 'images/check_icon.png' });
         availableComputers++;
       } 
       
-      menu.item(1, i, { title: 'Computer ' + (i+1), subtitle: status });
+      
     }
     
     menu.item(0,0, { title: availableComputers + ' computers', subtitle: 'are available now'});
