@@ -1,6 +1,7 @@
 var UI = require('ui');
 var ajax = require('ajax');
 var Vector2 = require('vector2');
+var Settings = require('settings');
 
 // Show splash screen while waiting for data
 var loadingWindow = new UI.Window({
@@ -20,9 +21,6 @@ var text = new UI.Text({
 
 // Add to splashWindow and show
 loadingWindow.add(text);
-
-
-
 
 var mainMenu = new UI.Menu({
   backgroundColor: 'white',
@@ -67,15 +65,15 @@ var mainMenu = new UI.Menu({
   }]
 });
 
+var card = new UI.Card({
+  title: 'Instructions',
+  scrollable: true,
+  style: 'small',
+  body: 'Press the center button to view the status of computers in the lab. \n\nPress and hold the center button while viewing any of the labs to refresh the data. \n\nPress and hold the center button from the main menu to view this card again.'
+});
+
 mainMenu.on('longSelect', function(e) {
-        var card = new UI.Card({
-          title: 'To use:',
-          subtitle: 'Testing'
-        });
-  
-        card.body('This is the content of my card!');
-        card.show();
-  
+    card.show();          
 });
 
 mainMenu.on('select', function(e) {
@@ -119,6 +117,40 @@ mainMenu.on('select', function(e) {
 
 mainMenu.show();
 
+// Speed up calls to hasOwnProperty
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function isEmpty(obj) {
+
+    // null and undefined are "empty"
+    if (obj === null) return true;
+
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0)    return false;
+    if (obj.length === 0)  return true;
+
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+
+    return true;
+}
+
+var data = Settings.data();
+var json = JSON.stringify(data);
+var NOT_FIRST_TIME = json;
+console.log("Not first time? " + NOT_FIRST_TIME);
+if(!(isEmpty(data))){ //if NOT_FIRST_TIME is not emptyS
+  console.log("Ran first block, I have used this app before!");
+}else{ //if NOT_FIRST_TIME does not have a value
+  console.log("Ran second block, I have not used this app before.");
+  card.show();
+  Settings.data('NOT_FIRST_TIME', { value: true });
+}
 
 
 function getLabStats(title, labID){
