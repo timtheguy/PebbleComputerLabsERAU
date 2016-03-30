@@ -64,6 +64,12 @@ var mainMenu = new UI.Menu({
     },{
       title: 'The HUB'
     }]
+  },{
+    title: 'Near Me (BETA)',
+    items: [{
+      title: 'Find a nearby',
+      subtitle: 'available computer'
+    }]
   }]
 });
 
@@ -114,10 +120,14 @@ mainMenu.on('select', function(e) {
     }else if(e.itemIndex === 2){ 
       getLabStats('The HUB (Mod 23)', 1022);
     }
+  }else if(e.sectionIndex ===5){
+    findNearby();
   }
 });
 
 mainMenu.show();
+
+
 
 function isEmpty(obj) {
 
@@ -157,6 +167,69 @@ if(!(isEmpty(data))){ //if NOT_FIRST_TIME is not emptyS
 
 //handle refresh event
 
+function findNearby(){
+  //1. get my location
+  var myLat;
+  var myLong;
+  
+  var locationOptions = {
+    enableHighAccuracy: true, 
+    maximumAge: 10000, 
+    timeout: 10000
+  };
+
+  function locationSuccess(pos) {
+    myLat = pos.coords.latitude;
+    myLong = pos.coords.longitude;
+    console.log('lat= ' + myLat + ' lon= ' + myLong); 
+  }
+
+  function locationError(err) {
+    console.log('location error (' + err.code + '): ' + err.message);
+    var errorcard = new UI.Card({
+      title: 'Error',
+      subtitle: "Is your GPS active? We can't find you!",
+      body: 'Error code: ' + err.code + '\n\nError message: ' + err.message,
+      scrollable: true,
+      style: 'small'
+    });
+    errorcard.show();
+  }
+    
+  navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
+  
+  //2. get distance from my location to all computer labs
+    //array of all lab locations
+    var labs = {
+      "locations":[
+          {"building":"COAS", "name":"Room 104 Lab", "latitude":"John", "longitude":"Doe", "id": 1234}, 
+          {"building":"COAS","name":"Room 105 Lab", "latitude":"John", "longitude":"Doe", "id": 1234}, 
+          {"building":"COAS","name":"Room 106 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
+          {"building":"COA","name":"Room 141 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
+          {"building":"COA","name":"Room 356 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
+          {"building":"COB","name":"Room 123 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
+          {"building":"LB","name":"Room 371 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
+          {"building":"SC","name":"Hunt Library", "latitude":"John", "longitude":"Doe", "id": 1234},
+          {"building":"MOD22","name":"Ignite Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
+          {"building":"MOD23","name":"The HUB", "latitude":"John", "longitude":"Doe", "id": 1234} 
+        ]
+      };
+  
+    //check distance to each one
+    var distances = [];
+    for(var i = 0; i<3; i++){
+      console.log(labs.locations[i].latitude);
+      //distances[i] = getDistance(lat1, long1, lat2, long2);
+    }
+  
+    //get index of smallest value, call index from 'locations'
+    //get labstats for location
+  
+  //3. smallest distance, show user number of computers available there
+    //3.1 if 0, show next closest
+  loadingWindow.hide();
+  getLabStats("Test", 1234);
+}
 
 function getLabStats(title, labID){
     var flickFlag = 0;
