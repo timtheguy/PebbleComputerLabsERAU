@@ -130,7 +130,6 @@ mainMenu.show();
 
 
 function isEmpty(obj) {
-
     // null and undefined are "empty"
     if (obj === null) return true;
 
@@ -148,6 +147,8 @@ function isEmpty(obj) {
 
     return true;
 }
+
+
 
 var data = Settings.data();
 var json = JSON.stringify(data);
@@ -167,6 +168,34 @@ if(!(isEmpty(data))){ //if NOT_FIRST_TIME is not emptyS
 
 //handle refresh event
 
+function getDistance(lat1, lon1, lat2, lon2){
+  var R = 6371; // km Radius of earth
+  var dLat = (lat2-lat1).toRad();
+  var dLon = (lon2-lon1).toRad(); 
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c;
+  
+  return d;
+}
+
+/** Converts numeric degrees to radians */
+if (typeof(Number.prototype.toRad) === "undefined") {
+  Number.prototype.toRad = function() {
+    return this * Math.PI / 180;
+  };
+}
+
+function indexOfSmallest(a) {
+ var lowest = 0;
+ for (var i = 1; i < a.length; i++) {
+  if (a[i] < a[lowest]) lowest = i;
+ }
+ return lowest;
+}
+
 function findNearby(){
   //1. get my location
   var myLat;
@@ -182,6 +211,7 @@ function findNearby(){
     myLat = pos.coords.latitude;
     myLong = pos.coords.longitude;
     console.log('lat= ' + myLat + ' lon= ' + myLong); 
+    makeCalculation();
   }
 
   function locationError(err) {
@@ -198,37 +228,41 @@ function findNearby(){
     
   navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
   
-  //2. get distance from my location to all computer labs
-    //array of all lab locations
-    var labs = {
-      "locations":[
-          {"building":"COAS", "name":"Room 104 Lab", "latitude":"John", "longitude":"Doe", "id": 1234}, 
-          {"building":"COAS","name":"Room 105 Lab", "latitude":"John", "longitude":"Doe", "id": 1234}, 
-          {"building":"COAS","name":"Room 106 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
-          {"building":"COA","name":"Room 141 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
-          {"building":"COA","name":"Room 356 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
-          {"building":"COB","name":"Room 123 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
-          {"building":"LB","name":"Room 371 Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
-          {"building":"SC","name":"Hunt Library", "latitude":"John", "longitude":"Doe", "id": 1234},
-          {"building":"MOD22","name":"Ignite Lab", "latitude":"John", "longitude":"Doe", "id": 1234},
-          {"building":"MOD23","name":"The HUB", "latitude":"John", "longitude":"Doe", "id": 1234} 
+  function makeCalculation(){
+      //2. get distance from my location to all computer labs
+      //array of all lab locations
+      var labs = {
+        "locations":[
+          {"building":"COAS", "name":"Room 104 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1016}, 
+          {"building":"COAS","name":"Room 105 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1017}, 
+          {"building":"COAS","name":"Room 106 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1018},
+          {"building":"COA","name":"Room 141 Lab", "latitude":29.187282, "longitude":-81.049913, "id": 1015},
+          {"building":"COA","name":"Room 356 Lab", "latitude":29.187586, "longitude":-81.049776, "id": 1023},
+          {"building":"COB","name":"Room 123 Lab", "latitude":29.187693, "longitude":-81.050475, "id": 1019},
+          {"building":"LB","name":"Room 371 Lab", "latitude":29.189256, "longitude":-81.046817, "id": 1012},
+          {"building":"SC","name":"Hunt Library", "latitude":29.189782, "longitude":-81.049675, "id": 1020}, 
+          {"building":"MOD22","name":"Ignite Lab", "latitude":29.190050, "longitude":-81.051021, "id": 1021},
+          {"building":"MOD23","name":"The HUB", "latitude":29.189551, "longitude":-81.050245, "id": 1022} , 
         ]
-      };
+          };
   
-    //check distance to each one
-    var distances = [];
-    for(var i = 0; i<3; i++){
-      console.log(labs.locations[i].latitude);
-      //distances[i] = getDistance(lat1, long1, lat2, long2);
-    }
+          //check distance to each one
+          var distances = [];
+        for(var i = 0; i<10; i++){
+          distances[i] = getDistance(myLat, myLong, labs.locations[i].latitude, labs.locations[i].longitude);
+        }
   
-    //get index of smallest value, call index from 'locations'
-    //get labstats for location
-  
-  //3. smallest distance, show user number of computers available there
-    //3.1 if 0, show next closest
-  loadingWindow.hide();
-  getLabStats("Test", 1234);
+      console.log(distances);
+      
+      var index = indexOfSmallest(distances);
+      console.log(index);
+    
+      //get labstats for location
+      getLabStats(labs.locations[index].name, labs.locations[index].id);
+      //3. smallest distance, show user number of computers available there
+      //3.1 if 0, show next closest
+      loadingWindow.hide();
+  } 
 }
 
 function getLabStats(title, labID){
