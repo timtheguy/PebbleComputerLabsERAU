@@ -5,6 +5,21 @@ var Settings = require('settings');
 var Vibe = require('ui/vibe');
 var Accel = require('ui/accel');
 
+var labs = {
+  "locations":[
+    {"building":"COAS", "name":"Room 104 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1016}, 
+    {"building":"COAS","name":"Room 105 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1017}, 
+    {"building":"COAS","name":"Room 106 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1018},
+    {"building":"COA","name":"Room 141 Lab", "latitude":29.187282, "longitude":-81.049913, "id": 1015},
+    {"building":"COA","name":"Room 356 Lab", "latitude":29.187586, "longitude":-81.049776, "id": 1023},
+    {"building":"COB","name":"Room 123 Lab", "latitude":29.187693, "longitude":-81.050475, "id": 1019},
+    {"building":"LB","name":"Room 371 Lab", "latitude":29.189256, "longitude":-81.046817, "id": 1012},
+    {"building":"SC","name":"Hunt Library", "latitude":29.189782, "longitude":-81.049675, "id": 1020}, 
+    {"building":"MOD22","name":"Ignite Lab", "latitude":29.190050, "longitude":-81.051021, "id": 1021},
+    {"building":"MOD23","name":"The HUB", "latitude":29.189551, "longitude":-81.050245, "id": 1022} , 
+  ]
+};
+
 // Show splash screen while waiting for data
 var loadingWindow = new UI.Window({
   backgroundColor:'black'
@@ -30,6 +45,12 @@ var mainMenu = new UI.Menu({
   highlightBackgroundColor: 'blue',
   highlightTextColor: 'white',
   sections: [{
+    title: 'Near Me (BETA)',
+    items: [{
+      title: 'Find a nearby',
+      subtitle: 'available computer'
+    }]
+  },{
     title: 'College of Arts and Sciences',
     items: [{
       title: 'Room 104 Lab',
@@ -64,12 +85,6 @@ var mainMenu = new UI.Menu({
     },{
       title: 'The HUB'
     }]
-  },{
-    title: 'Near Me (BETA)',
-    items: [{
-      title: 'Find a nearby',
-      subtitle: 'available computer'
-    }]
   }]
 });
 
@@ -90,7 +105,9 @@ mainMenu.on('select', function(e) {
   
   loadingWindow.show();
   
-  if(e.sectionIndex === 0){ //COAS
+  if(e.sectionIndex === 0){
+    findNearby();
+  }else if(e.sectionIndex === 1){ //COAS
     if(e.itemIndex === 0){ 
       getLabStats('Room 104 Lab', 1016);
     }else if(e.itemIndex === 1){ 
@@ -98,21 +115,21 @@ mainMenu.on('select', function(e) {
     }else if(e.itemIndex === 2){ 
       getLabStats('Room 106 Lab', 1018);
     }
-  }else if(e.sectionIndex === 1){ //COA
+  }else if(e.sectionIndex === 2){ //COA
      if(e.itemIndex === 0){ 
       getLabStats('Room 141 Lab', 1015);
     }else if(e.itemIndex === 1){ 
       getLabStats('Room 356 Lab', 1023);
     }
-  }else if(e.sectionIndex === 2){ //COB
+  }else if(e.sectionIndex === 3){ //COB
     if(e.itemIndex === 0){ 
       getLabStats('Room 123 Lab', 1019);
     }
-  }else if(e.sectionIndex === 3){ //LB
+  }else if(e.sectionIndex === 4){ //LB
     if(e.itemIndex === 0){ 
       getLabStats('Room 371 Lab', 1012);
     }
-  }else if(e.sectionIndex === 4){ //OTHER
+  }else if(e.sectionIndex === 5){ //OTHER
     if(e.itemIndex === 0){ 
       getLabStats('Library', 1020);
     }else if(e.itemIndex === 1){ 
@@ -121,7 +138,7 @@ mainMenu.on('select', function(e) {
       getLabStats('The HUB (Mod 23)', 1022);
     }
   }else if(e.sectionIndex ===5){
-    findNearby();
+    
   }
 });
 
@@ -231,21 +248,6 @@ function findNearby(){
   function makeCalculation(){
       //2. get distance from my location to all computer labs
       //array of all lab locations
-      var labs = {
-        "locations":[
-          {"building":"COAS", "name":"Room 104 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1016}, 
-          {"building":"COAS","name":"Room 105 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1017}, 
-          {"building":"COAS","name":"Room 106 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1018},
-          {"building":"COA","name":"Room 141 Lab", "latitude":29.187282, "longitude":-81.049913, "id": 1015},
-          {"building":"COA","name":"Room 356 Lab", "latitude":29.187586, "longitude":-81.049776, "id": 1023},
-          {"building":"COB","name":"Room 123 Lab", "latitude":29.187693, "longitude":-81.050475, "id": 1019},
-          {"building":"LB","name":"Room 371 Lab", "latitude":29.189256, "longitude":-81.046817, "id": 1012},
-          {"building":"SC","name":"Hunt Library", "latitude":29.189782, "longitude":-81.049675, "id": 1020}, 
-          {"building":"MOD22","name":"Ignite Lab", "latitude":29.190050, "longitude":-81.051021, "id": 1021},
-          {"building":"MOD23","name":"The HUB", "latitude":29.189551, "longitude":-81.050245, "id": 1022} , 
-        ]
-          };
-  
           //check distance to each one
           var distances = [];
         for(var i = 0; i<10; i++){
