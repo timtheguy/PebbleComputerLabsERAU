@@ -39,6 +39,27 @@ var text = new UI.Text({
 // Add to splashWindow and show
 loadingWindow.add(text);
 
+var startMenu = new UI.Menu({
+  backgroundColor: 'white',
+  textColor: 'black',
+  highlightBackgroundColor: 'blue',
+  highlightTextColor: 'white',
+      sections: [{
+      title: 'ERAU Labs',
+      items: [{
+      title: 'Show nearby',
+      subtitle: 'available computers'
+      },{
+      title: 'Show open',
+      subtitle: 'computer labs'
+      },{
+      title: 'Show all',
+      subtitle: 'computer labs'
+      }]
+  }]
+    });
+    
+    
 var mainMenu = new UI.Menu({
   backgroundColor: 'white',
   textColor: 'black',
