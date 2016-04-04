@@ -7,16 +7,16 @@ var Accel = require('ui/accel');
 
 var labs = {
   "locations":[
-    {"building":"COAS", "name":"Room 104 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1016}, 
-    {"building":"COAS","name":"Room 105 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1017}, 
-    {"building":"COAS","name":"Room 106 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1018},
-    {"building":"COA","name":"Room 141 Lab", "latitude":29.187282, "longitude":-81.049913, "id": 1015},
-    {"building":"COA","name":"Room 356 Lab", "latitude":29.187586, "longitude":-81.049776, "id": 1023},
-    {"building":"COB","name":"Room 123 Lab", "latitude":29.187693, "longitude":-81.050475, "id": 1019},
-    {"building":"LB","name":"Room 371 Lab", "latitude":29.189256, "longitude":-81.046817, "id": 1012},
-    {"building":"SC","name":"Hunt Library", "latitude":29.189782, "longitude":-81.049675, "id": 1020}, 
-    {"building":"MOD22","name":"Ignite Lab", "latitude":29.190050, "longitude":-81.051021, "id": 1021},
-    {"building":"MOD23","name":"The HUB", "latitude":29.189551, "longitude":-81.050245, "id": 1022} , 
+    {"building":"COAS", "name":"Room 104 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1016, "printer": "color", "hours": ""}, 
+    {"building":"COAS","name":"Room 105 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1017, "printer": "none", "hours": ""}, 
+    {"building":"COAS","name":"Room 106 Lab", "latitude":29.188303, "longitude":-81.048230, "id": 1018, "printer": "none", "hours": ""},
+    {"building":"COA","name":"Room 141 Lab", "latitude":29.187282, "longitude":-81.049913, "id": 1015, "printer": "color", "hours": ""},
+    {"building":"COA","name":"Room 356 Lab", "latitude":29.187586, "longitude":-81.049776, "id": 1023, "printer": "none", "hours": ""},
+    {"building":"COB","name":"Room 123 Lab", "latitude":29.187693, "longitude":-81.050475, "id": 1019, "printer": "color", "hours": ""},
+    {"building":"LB","name":"Room 371 Lab", "latitude":29.189256, "longitude":-81.046817, "id": 1012, "printer": "color", "hours": ""},
+    {"building":"SC","name":"Hunt Library", "latitude":29.189782, "longitude":-81.049675, "id": 1020, "printer": "bw", "hours": ""}, 
+    {"building":"MOD22","name":"Ignite Lab", "latitude":29.190050, "longitude":-81.051021, "id": 1021, "printer": "color", "hours": ""},
+    {"building":"MOD23","name":"The HUB", "latitude":29.189551, "longitude":-81.050245, "id": 1022, "printer": "none", "hours": ""} , 
   ]
 };
 
