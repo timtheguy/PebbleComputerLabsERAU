@@ -50,7 +50,8 @@
     "shortName": "ERAU: Labs",
     "targetPlatforms": [
         "aplite",
-        "basalt"
+        "basalt",
+        "chalk"
     ],
     "uuid": "36c9b9c9-e91e-4ae8-b13a-3c92080160ea",
     "versionCode": 1,

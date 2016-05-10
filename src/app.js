@@ -130,33 +130,33 @@ mainMenu.on('select', function(e) {
     findNearby();
   }else if(e.sectionIndex === 1){ //COAS
     if(e.itemIndex === 0){ 
-      getLabStats('Room 104 Lab', 1016);
+      getLabStatsMenu('Room 104 Lab', 1016);
     }else if(e.itemIndex === 1){ 
-      getLabStats('Room 105 Lab', 1017);
+      getLabStatsMenu('Room 105 Lab', 1017);
     }else if(e.itemIndex === 2){ 
-      getLabStats('Room 106 Lab', 1018);
+      getLabStatsMenu('Room 106 Lab', 1018);
     }
   }else if(e.sectionIndex === 2){ //COA
      if(e.itemIndex === 0){ 
-      getLabStats('Room 141 Lab', 1015);
+      getLabStatsMenu('Room 141 Lab', 1015);
     }else if(e.itemIndex === 1){ 
-      getLabStats('Room 356 Lab', 1023);
+      getLabStatsMenu('Room 356 Lab', 1023);
     }
   }else if(e.sectionIndex === 3){ //COB
     if(e.itemIndex === 0){ 
-      getLabStats('Room 123 Lab', 1019);
+      getLabStatsMenu('Room 123 Lab', 1019);
     }
   }else if(e.sectionIndex === 4){ //LB
     if(e.itemIndex === 0){ 
-      getLabStats('Room 371 Lab', 1012);
+      getLabStatsMenu('Room 371 Lab', 1012);
     }
   }else if(e.sectionIndex === 5){ //OTHER
     if(e.itemIndex === 0){ 
-      getLabStats('Library', 1020);
+      getLabStatsMenu('Library', 1020);
     }else if(e.itemIndex === 1){ 
-      getLabStats('Ignite Lab (Mod 22)', 1021);
+      getLabStatsMenu('Ignite Lab (Mod 22)', 1021);
     }else if(e.itemIndex === 2){ 
-      getLabStats('The HUB (Mod 23)', 1022);
+      getLabStatsMenu('The HUB (Mod 23)', 1022);
     }
   }else if(e.sectionIndex ===5){
     
@@ -281,14 +281,14 @@ function findNearby(){
       console.log(index);
     
       //get labstats for location
-      getLabStats(labs.locations[index].name, labs.locations[index].id);
+      getLabStatsMenu(labs.locations[index].name, labs.locations[index].id);
       //3. smallest distance, show user number of computers available there
       //3.1 if 0, show next closest
       loadingWindow.hide();
   } 
 }
 
-function getLabStats(title, labID){
+function getLabStatsMenu(title, labID){
     var flickFlag = 0;
     var menu = new UI.Menu({
       backgroundColor: 'white',
@@ -307,7 +307,7 @@ function getLabStats(title, labID){
     menu.on('longSelect', function(e) {
       loadingWindow.show();
       menu.hide();
-      getLabStats(title, labID);
+      getLabStatsMenu(title, labID);
     });
   
   Accel.on('tap', function(e) {
@@ -316,7 +316,7 @@ function getLabStats(title, labID){
       }else if(flickFlag === 0){
         loadingWindow.show();
         menu.hide();
-        getLabStats(title, labID);
+        getLabStatsMenu(title, labID);
         flickFlag++;
       }
       
